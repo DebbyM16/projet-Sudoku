@@ -7,5 +7,5 @@ Filière : LDDMP
 Groupe :  Mahé CASTREC (responsable du code)
          - Chenxi LIN
          - Lou-Anne GODART-DELONS
-         - Déborah MOREL (respnsable Github)
+         - Déborah MOREL (responsable Github)
          
