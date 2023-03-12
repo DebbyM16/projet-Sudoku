@@ -1,4 +1,5 @@
 import tkinter as tk
+import random as rd
 
 G1 = [[1, 2, 3, 4, 5, 6, 7, 8, 9] ,  
       [7, 8, 9, 1, 2, 3, 4, 5, 6] , 
@@ -16,7 +17,6 @@ G1 = [[1, 2, 3, 4, 5, 6, 7, 8, 9] ,
 
 def mélangerlignes(G):
     L = []
-    import random as rd
     for i in range(0, 3):
         a = rd.randint(0, 2)
         L.append(G[a])
@@ -32,7 +32,6 @@ def mélangerlignes(G):
 
 def cryptage(G):
     L = []
-    import random as rd
     while len(L) < 9 :
         a = rd.randint(1, 9)
         if a not in L :
@@ -50,7 +49,6 @@ def cryptage(G):
 
 def mélangercolonnes(G):
     L = [[], [], [], [], [], [], [], [], []]
-    import random as rd
     for j in range(0, 3):
         n = rd.randint(0, 2)
         for i in range(0, 9):
@@ -86,18 +84,18 @@ for i in range(Case+1):
         verticale = grille.create_line((i*Taille)/Case, 0, (i*Taille)/Case, Taille)
         horizontale = grille.create_line(0,(i*Taille)/Case, Taille, (i*Taille)/Case)
 
+# Bouton pour commencer la partie
+
 def affichage(G):
     a = mélangerlignes(G)
     b = mélangercolonnes(a)
     c = cryptage(b)
 
-    for n in range(Case+1):
-        for t in range(Case+1):
-            position = grille.create_text()
+    for n in range(len(c)):
+        for t in range(len(c)):
+            position = grille.create_text((Taille-565)+(t*(Taille-533)), (Taille-570)+(n*(Taille-533)), text= str(c[n][t]), font="30")
 
-# Bouton pour commencer la partie
-
-lancement = tk.Button(fenetre, text= "On commence ?", command= affichage(G1))
+lancement = tk.Button(fenetre, command=affichage(G1), text= "On commence ?")
 lancement.grid(row= 0, column= 1)
 
 fenetre.mainloop()
