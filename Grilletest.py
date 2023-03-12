@@ -16,5 +16,3 @@ def mélangerlignes(G):
     for i in range(1, 4):
         a = rd.randint(1, 3)
         G[i] = G[a]
-
-
