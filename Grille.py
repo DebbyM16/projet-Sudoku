@@ -23,7 +23,7 @@ for i in range(Case+1):
 
 # Bouton pour commencer la partie
 
-lancement = tk.Button(fenetre, text= "On commence ?")
+lancement = tk.Button(fenetre, text= "On commence ?", command=)
 lancement.grid(row= 0, column= 1)
 
 fenetre.mainloop()
