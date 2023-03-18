@@ -61,7 +61,7 @@ btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), 
 btn_annuler.place(x=500, y=600, width=80, height=50)
 
 btn_retourner = tk.Button(fenetre, text="Retourne", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre("retourner"))
-btn_retourner.place(x=580, y=600, width=80, height=50)
+btn_retourner.place(x=580, y=600, width=100, height=50)
 
 #créer des fonctions
 lists = []
@@ -73,25 +73,20 @@ def pressNum(num):
     global isPressNum
     oldnum = result.get()
     if oldnum == "0":
-        result.set(num)
+        result.set(num)#si on appuie sur 0, alors il affiche "0"
     else:
-        newnum= oldnum + num
+        newnum= oldnum + num#si on a pas appuie sur 0, alors il affiche "0" plus le nombre qu'on a appuié
         result.set(newnum)
 
-    if isPressNum == False:
-        pass
-    else:
-        result.set("0")
-        isPressNum = False
+
 
 def pressLettre(lettre):
-    num = result.get()
     if lettre == "annuler":
         lists.clear()
         result.set(" ")
     if lettre == "retourner":
-        a= num[0:-1]
         lists.clear()
-        result.set(a)
+        result.set(" ")
 
 fenetre.mainloop()
+
