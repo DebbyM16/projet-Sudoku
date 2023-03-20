@@ -15,6 +15,7 @@ G1 = [[9, 1, 4, 5, 2, 3, 8, 7, 6] ,
 def mélangerlignes(G):
     L = []
     import random as rd
+
     for i in range(0, 3):
         a = rd.randint(0, 2)
         L.append(G[a])
