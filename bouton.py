@@ -6,7 +6,6 @@ fenetre = tk.Tk()
 fenetre.title("Sudoku")
 fenetre.geometry("700x700")
 
-#écran d'affichage
 result = tk.StringVar() 
 result.set("0") #la valeur initiale = 0
 
@@ -22,7 +21,7 @@ for i in range(Case+1):
         horizontale = grille.create_line(0, (i*Taille)/Case, Taille, (i*Taille)/Case)
 
 #affichage des chiffres qu'on a cliqué
-affichage = tk.Label(grille, font=("helvetica", 30), bg="grey", bd="9", fg="black", anchor="se", textvariable=result) #lorsqu'on a changé les chiffres de l'écran, "result" vas prendre valeurs qu'on a changé
+affichage = tk.Label(grille, font=("helvetica", 30), bg="grey", bd="9", fg="black", textvariable=result) #lorsqu'on a changé les chiffres de l'écran, "result" vas prendre valeurs qu'on a changé
 affichage.place(x=0, y=0, width=67, height=67)
 
 #boutons des chiffres
@@ -65,22 +64,19 @@ btn_retourner.place(x=580, y=600, width=100, height=50)
 
 #créer des fonctions
 lists = []
-isPressNum = False
-
 #fonction de chiffres
 def pressNum(num):
-    global lists
-    global isPressNum
     oldnum = result.get()
     if oldnum == "0":
-        result.set(num)#si on appuie sur 0, alors il affiche "0"
+        result.set(num)#si oldnum = 0, on obtient le nombre qu'on vas appuyer après
     else:
-        newnum= oldnum + num#si on a pas appuie sur 0, alors il affiche "0" plus le nombre qu'on a appuié
+        newnum= oldnum + num#si oldnum égale pas à 0, on obtient le nombre qu'on a appuyé plus le nombre qu'on a appuyé la deuxième fois
         result.set(newnum)
 
 
 
 def pressLettre(lettre):
+    global lists
     if lettre == "annuler":
         lists.clear()
         result.set(" ")
