@@ -27,23 +27,6 @@ def mélangerlignes(G):
         L.append(G[0])
         del G[0]
     return L
-    
-#Cette fonction sert à crypter une grille grâce à une clé de cryptage prise au hasard 
-
-def cryptage(G):
-    L = []
-    while len(L) < 9 :
-        a = rd.randint(1, 9)
-        if a not in L :
-            L.append(a)
-    for i in range(0, 9):
-        for j in range(0, 9):
-            for n in range(0, 9):
-                if G[i][j] == n + 1 :
-                    G[i][j] = L[n]
-                    break
-            
-    return G
 
 #Cette fonction sert à mélanger les colonnes dans une même rangée de 3
 
@@ -62,6 +45,24 @@ def mélangercolonnes(G):
             L[i].append(G[i][0])
             del G[i][0]
     return L
+
+    
+#Cette fonction sert à crypter une grille grâce à une clé de cryptage prise au hasard 
+
+def cryptage(G):
+    L = []
+    while len(L) < 9 :
+        a = rd.randint(1, 9)
+        if a not in L :
+            L.append(a)
+    for i in range(0, 9):
+        for j in range(0, 9):
+            for n in range(0, 9):
+                if G[i][j] == n + 1 :
+                    G[i][j] = L[n]
+                    break
+            
+    return G
 
 # Création de la fenêtre
 
