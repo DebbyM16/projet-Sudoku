@@ -93,9 +93,9 @@ def affichage(G):
 
     for n in range(len(c)):
         for t in range(len(c)):
-            position = grille.create_text((Taille-565)+(t*(Taille-533)), (Taille-570)+(n*(Taille-533)), text= str(c[n][t]), font="30")
+            position = grille.create_text((Taille-565)+(t*(Taille-533)), (Taille-570)+(n*(Taille-533)), text= str(c[n][t]), font="35")
 
-lancement = tk.Button(fenetre, command=affichage(G1), text= "On commence ?")
+lancement = tk.Button(fenetre, command= lambda : affichage(G1), text= "On commence ?")
 lancement.grid(row= 0, column= 1)
 
 fenetre.mainloop()
