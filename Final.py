@@ -17,7 +17,7 @@ G1 = [[9, 1, 4, 5, 2, 3, 8, 7, 6] ,
 
 # Cette fonction sert à mélanger les lignes dans une même rangée de 3 
 
-def mélangerlignes(G):
+def melangerlignes(G):
     L = []
     for i in range(0, 3):
         a = rd.randint(0, 2)
@@ -32,7 +32,7 @@ def mélangerlignes(G):
 
 # Cette fonction sert à mélanger les colonnes dans une même rangée de 3
 
-def mélangercolonnes(G):
+def melangercolonnes(G):
     L = [[], [], [], [], [], [], [], [], []]
     for j in range(0, 3):
         n = rd.randint(0, 2)
@@ -64,6 +64,36 @@ def cryptage(G):
                     break
             
     return G
+
+#  Cette fonction génère les coordonnées des cases à remplir sans doublons
+
+def generate_case(liste):
+    x = rd.randint(0, 8)
+    y = rd.randint(0, 8)
+
+    while (x,y) in liste:
+        x,y = rd.randint(0, 8), rd.randint(0, 8)
+    
+    liste.append((x,y))
+
+# Cette fonction créée les cases à remplir 
+
+value = None
+X,Y = None, None
+
+def create_entry(canvas, i, j):
+    global Taille, Case
+    a_remplir = tk.IntVar(canvas)
+    
+    def focus(*args, v=a_remplir, x=j, y=i):
+        global value, X, Y
+        value = v
+        X,Y = x,y
+
+    affichage = tk.Entry(canvas, bg= "grey79", font= "35", relief="solid", justify= "center", textvariable= a_remplir)
+    affichage.bind('<FocusIn>', focus)
+    affichage.place(x=(i*Taille)/Case , y= (j*Taille)/Case, width=67, height=67)
+
 
 # Fonctions pour les boutons des chiffres
 
@@ -155,25 +185,27 @@ btn_retourner.place(x=530, y=600, width=100, height=50)
 # Bouton pour commencer la partie
 
 def affichage(Grille):
-    a = mélangerlignes(Grille)
-    b = mélangercolonnes(a)
+    a = melangerlignes(Grille)
+    b = melangercolonnes(a)
     c = cryptage(b)
-    hasard = 0
+    print(c)
+    hasard = []
 
+    for i in range(30):
+        generate_case(hasard)
+    
     for n in range(len(c)):
         for t in range(len(c)):
-            position = grille.create_text((Taille-565)+(t*(Taille-533)), (Taille-570)+(n*(Taille-533)), text= str(c[n][t]), font="35")
+            if (n, t) in hasard:
+                create_entry(grille, t, n)
+            else:
+                x = (Taille-565)+(t*(Taille-533))
+                y = (Taille-570)+(n*(Taille-533))
+                print(x,y)
+                position = grille.create_text(x, y, text= str(c[n][t]), font="35")
+   
+            
     
-    while hasard != 30:
-        r = rd.randint(0, 8)
-        e = rd.randint(0, 8)
-        affichage = tk.Label(grille, bg= "grey79", font= "35", relief="solid", textvariable= result)
-        affichage.place(x=(r*Taille)/Case , y= (e*Taille)/Case, width=67, height=67)
-        hasard += 1
-
-    
-
-
 lancement = tk.Button(fenetre, command= lambda : affichage(G1), text= "On commence ?")
 lancement.grid(row= 0, column= 1)
 
