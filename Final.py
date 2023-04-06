@@ -92,7 +92,7 @@ def create_entry(canvas, i, j):
         value = v
         X,Y = x,y
 
-    affichage = tk.Entry(canvas, bg= "grey79",fg= "violet red" , font= "35", relief="solid", justify= "center", textvariable= a_remplir)
+    affichage = tk.Entry(canvas, bg= "grey79", fg= "violet red" , font= "35", relief="solid", justify= "center", textvariable= a_remplir)
     affichage.bind('<FocusIn>', focus)
     affichage.place(x=(i*Taille)/Case , y= (j*Taille)/Case, width=67, height=67)
 
