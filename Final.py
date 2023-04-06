@@ -1,5 +1,6 @@
 import tkinter as tk
 import random as rd
+from tkinter import ttk
 
 
 
@@ -84,6 +85,7 @@ X,Y = None, None
 def create_entry(canvas, i, j):
     global Taille, Case
     a_remplir = tk.IntVar(canvas)
+    a_remplir.trace("w", test_erreur)
     
     def focus(*args, v=a_remplir, x=j, y=i):
         global value, X, Y
@@ -100,21 +102,26 @@ def create_entry(canvas, i, j):
 lists = []
 
 def pressNum(num):
-    oldnum = result.get()
-    if oldnum == "0":
-        result.set(num) #si oldnum = 0, on obtient le nombre qu'on vas appuyer après
+    global value
+    value.set(num)
+
+def test_erreur(*args):
+    global value, c, X, Y, message_erreur
+
+    if value.get() != c[X][Y]:
+        message_erreur.set("ERREUR")
     else:
-        newnum= oldnum + num #si oldnum != 0, on obtient le nombre qu'on a appuyé plus le nombre qu'on a appuyé la deuxième fois
-        result.set(newnum)
+        message_erreur.set('')
+
 
 def pressLettre(lettre):
-    global lists
+    global lists, value
     if lettre == "annuler":
         lists.clear()
-        result.set(" ")
+        value.set(" ")
     if lettre == "retourner":
         lists.clear()
-        result.set(" ")
+        value.set(" ")
 
 
 
@@ -128,10 +135,17 @@ fenetre = tk.Tk()
 fenetre.title("Sudoku")
 fenetre.geometry("700x700")
 
-result = tk.StringVar()
+bis = ttk.Frame(fenetre)
+bis.rowconfigure(0, weight= 1)
+bis.rowconfigure(3, weight= 1)
+bis.grid(row=0, column=11, sticky= 'ns')
 
-grille = tk.Canvas(height= Taille, width= Taille)
-grille.grid()
+message_erreur = tk.StringVar(fenetre)
+erreur = tk.Label(bis, textvariable= message_erreur, fg= 'red')
+erreur.grid(row=1, column=0)
+
+grille = tk.Canvas(fenetre, height= Taille, width= Taille)
+grille.grid(row= 0, column= 0, columnspan= 11)
 
 # Création de la grille
 
@@ -146,49 +160,50 @@ for i in range(Case+1):
 
 #Création des boutons des chiffres
 
-bouton1 = tk.Button(fenetre, text="1", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("1"))
-bouton1.place(x=0, y=600, width=50, height=50)
+bouton1 = tk.Button(fenetre, text="1", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(1))
+bouton1.grid(row=1, column=0)
 
-bouton2 = tk.Button(fenetre, text="2", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("2"))
-bouton2.place(x=50, y=600, width=50, height=50)
+bouton2 = tk.Button(fenetre, text="2", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(2))
+bouton2.grid(row=1, column=1)
 
-bouton3 = tk.Button(fenetre, text="3", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("3"))
-bouton3.place(x=100, y=600, width=50, height=50)
+bouton3 = tk.Button(fenetre, text="3", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(3))
+bouton3.grid(row=1, column=2)
 
-bouton4 = tk.Button(fenetre, text="4", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("4"))
-bouton4.place(x=150, y=600, width=50, height=50)
+bouton4 = tk.Button(fenetre, text="4", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(4))
+bouton4.grid(row=1, column=3)
 
-bouton5 = tk.Button(fenetre, text="5", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("5"))
-bouton5.place(x=200, y=600, width=50, height=50)
+bouton5 = tk.Button(fenetre, text="5", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(5))
+bouton5.grid(row=1, column=4)
 
-bouton6 = tk.Button(fenetre, text="6", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("6"))
-bouton6.place(x=250, y=600, width=50, height=50)
+bouton6 = tk.Button(fenetre, text="6", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(6))
+bouton6.grid(row=1, column=5)
 
-bouton7 = tk.Button(fenetre, text="7", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("7"))
-bouton7.place(x=300, y=600, width=50, height=50)
+bouton7 = tk.Button(fenetre, text="7", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(7))
+bouton7.grid(row=1, column=6)
 
-bouton8 = tk.Button(fenetre, text="8", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("8"))
-bouton8.place(x=350, y=600, width=50, height=50)
+bouton8 = tk.Button(fenetre, text="8", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(8))
+bouton8.grid(row=1, column=7)
 
-bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum("9"))
-bouton9.place(x=400, y=600, width=50, height=50)
+bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(9))
+bouton9.grid(row=1, column=8)
 
 #Création des boutons d'action
 
 btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre("annuler"))
-btn_annuler.place(x=450, y=600, width=80, height=50)
+btn_annuler.grid(row=1, column=9)
 
 btn_retourner = tk.Button(fenetre, text="Retourne", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre("retourner"))
-btn_retourner.place(x=530, y=600, width=100, height=50)
+btn_retourner.grid(row=1, column=10)
 
 
 # Bouton pour commencer la partie
-
+c = []
 def affichage(Grille):
+    global c
+    
     a = melangerlignes(Grille)
     b = melangercolonnes(a)
     c = cryptage(b)
-    print(c)
     hasard = []
 
     for i in range(30):
@@ -201,12 +216,13 @@ def affichage(Grille):
             else:
                 x = (Taille-565)+(t*(Taille-533))
                 y = (Taille-570)+(n*(Taille-533))
-                print(x,y)
                 position = grille.create_text(x, y, text= str(c[n][t]), font="35")
+    
+
    
             
     
-lancement = tk.Button(fenetre, command= lambda : affichage(G1), text= "On commence ?")
-lancement.grid(row= 0, column= 1)
+lancement = tk.Button(bis, command= lambda : affichage(G1), text= "On commence ?")
+lancement.grid(row= 2, column= 0)
 
 fenetre.mainloop()
