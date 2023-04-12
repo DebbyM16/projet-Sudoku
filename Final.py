@@ -84,7 +84,7 @@ X,Y = None, None
 
 def create_entry(canvas, i, j):
     global Taille, Case
-    a_remplir = tk.IntVar(canvas)
+    a_remplir = tk.IntVar(canvas, " ")
     a_remplir.trace("w", test_erreur)
     
     def focus(*args, v=a_remplir, x=j, y=i):
@@ -105,14 +105,20 @@ def pressNum(num):
     global value
     value.set(num)
 
+b = True
+
 def test_erreur(*args):
-    global value, c, X, Y, message_erreur
+    global value, c, X, Y, message_erreur, hasard
 
     if value.get() != c[X][Y]:
         message_erreur.set("ERREUR")
     else:
         message_erreur.set('')
-
+        hasard.remove((X,Y))
+        if hasard == []:
+            b = False
+            finish = tk.Label(fenetre, relief= "groove", fg = 'red', text= "BRAVO ! Vous avez gagné !")
+            finish.grid(row=0, column=0, columnspan=11)
 
 def pressLettre(lettre):
     global lists, value
@@ -137,11 +143,12 @@ fenetre.geometry("700x700")
 
 bis = ttk.Frame(fenetre)
 bis.rowconfigure(0, weight= 1)
-bis.rowconfigure(3, weight= 1)
+bis.rowconfigure(4, weight= 1)
 bis.grid(row=0, column=11, sticky= 'ns')
 
 message_erreur = tk.StringVar(fenetre)
-erreur = tk.Label(bis, textvariable= message_erreur, fg= 'red')
+nb_erreur = tk.StringVar(fenetre, "0 erreur(s)")
+erreur = tk.Label(bis, textvariable= message_erreur, fg= 'red', relief= "sunken")
 erreur.grid(row=1, column=0)
 
 grille = tk.Canvas(fenetre, height= Taille, width= Taille)
@@ -198,16 +205,17 @@ btn_retourner.grid(row=1, column=10)
 
 # Bouton pour commencer la partie
 c = []
+hasard = []
 def affichage(Grille):
-    global c
+    global c, hasard
     
     a = melangerlignes(Grille)
     b = melangercolonnes(a)
     c = cryptage(b)
-    hasard = []
 
     for i in range(30):
         generate_case(hasard)
+    print(hasard)
     
     for n in range(len(c)):
         for t in range(len(c)):
@@ -216,13 +224,9 @@ def affichage(Grille):
             else:
                 x = (Taille-565)+(t*(Taille-533))
                 y = (Taille-570)+(n*(Taille-533))
-                position = grille.create_text(x, y, text= str(c[n][t]), font="35")
-    
-
-   
-            
+                position = grille.create_text(x, y, text= str(c[n][t]), font="35") 
     
 lancement = tk.Button(bis, command= lambda : affichage(G1), text= "On commence ?")
-lancement.grid(row= 2, column= 0)
+lancement.grid(row= 3, column= 0)
 
 fenetre.mainloop()
