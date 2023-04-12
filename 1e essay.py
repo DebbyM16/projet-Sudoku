@@ -147,9 +147,12 @@ bis.rowconfigure(4, weight= 1)
 bis.grid(row=0, column=11, sticky= 'ns')
 
 message_erreur = tk.StringVar(fenetre)
-nb_erreur = tk.StringVar(fenetre, "0 erreur(s)")
 erreur = tk.Label(bis, textvariable= message_erreur, fg= 'red', relief= "sunken")
 erreur.grid(row=1, column=0)
+
+compteur = tk.StringVar(fenetre, "0 : 0")
+chrono = tk.Label(bis, relief="sunken", font= 35, textvariable=compteur)
+chrono.grid(row=0, column=0)
 
 grille = tk.Canvas(fenetre, height= Taille, width= Taille)
 grille.grid(row= 0, column= 0, columnspan= 11)
@@ -206,8 +209,9 @@ btn_retourner.grid(row=1, column=10)
 # Bouton pour commencer la partie
 c = []
 hasard = []
+d = 0
 def affichage(Grille):
-    global c, hasard
+    global c, hasard, b
     
     a = melangerlignes(Grille)
     b = melangercolonnes(a)
@@ -215,7 +219,6 @@ def affichage(Grille):
 
     for i in range(30):
         generate_case(hasard)
-    print(hasard)
     
     for n in range(len(c)):
         for t in range(len(c)):
@@ -225,8 +228,21 @@ def affichage(Grille):
                 x = (Taille-565)+(t*(Taille-533))
                 y = (Taille-570)+(n*(Taille-533))
                 position = grille.create_text(x, y, text= str(c[n][t]), font="35") 
+
+def start():
+    global fenetre, compteur, d, b
     
-lancement = tk.Button(bis, command= lambda : affichage(G1), text= "On commence ?")
-lancement.grid(row= 3, column= 0)
+    affichage(G1)
+
+    d += 1
+    minutes = d // 60
+    secondes = d % 60
+    compteur.set(str(minutes) + " : " + str(secondes))
+    print(d)
+    if b == True:
+        fenetre.after(1000, start())
+
+lancement = tk.Button(bis, command= lambda : start(), text= "On commence ?")
+lancement.grid(row= 2, column= 0)
 
 fenetre.mainloop()
