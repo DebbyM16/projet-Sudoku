@@ -4,6 +4,11 @@ from tkinter import ttk
 
 
 
+""" Variables pour les fonctions et l'interface graphique """ 
+
+
+# Grille de base 
+
 G1 = [[9, 1, 4, 5, 2, 3, 8, 7, 6] ,  
       [3, 7, 5, 9, 6, 8, 4, 2, 1] , 
       [6, 2, 8, 7, 1, 4, 3, 5, 9] , 
@@ -14,9 +19,29 @@ G1 = [[9, 1, 4, 5, 2, 3, 8, 7, 6] ,
       [7, 3, 1, 2, 4, 5, 6, 9, 8] , 
       [8, 5, 2, 3, 9, 6, 1, 4, 7]]
 
+# Listes vides
+
+nouvelle_grille = []
+hasard = []
+
+# Variables pour l'interface
+
+Taille = 600
+Case = 9
+
+# Variables diverses
+
+end = True
+boucle = 0
+value = None
+X, Y = None, None
 
 
-# Cette fonction sert à mélanger les lignes dans une même rangée de 3 
+
+""" Fonctions """
+
+
+# Cette fonction sert à mélanger les lignes de la grille dans une même rangée de 3 
 
 def melangerlignes(G):
     L = []
@@ -31,7 +56,7 @@ def melangerlignes(G):
         del G[0]
     return L
 
-# Cette fonction sert à mélanger les colonnes dans une même rangée de 3
+# Cette fonction sert à mélanger les colonnes de la grille dans une même rangée de 3
 
 def melangercolonnes(G):
     L = [[], [], [], [], [], [], [], [], []]
@@ -49,7 +74,7 @@ def melangercolonnes(G):
             del G[i][0]
     return L
 
-# Cette fonction sert à crypter une grille grâce à une clé de cryptage prise au hasard 
+# Cette fonction sert à crypter la grille grâce à une clé de cryptage prise au hasard 
 
 def cryptage(G):
     L = []
@@ -77,10 +102,7 @@ def generate_case(liste):
     
     liste.append((x,y))
 
-# Cette fonction créée les cases à remplir 
-
-value = None
-X,Y = None, None
+# Cette fonction crée les cases à remplir
 
 def create_entry(canvas, i, j):
     global Taille, Case
@@ -96,42 +118,78 @@ def create_entry(canvas, i, j):
     affichage.bind('<FocusIn>', focus)
     affichage.place(x=(i*Taille)/Case , y= (j*Taille)/Case, width=67, height=67)
 
-
-# Fonctions pour les boutons des chiffres
+# Cette fonction rempli une case quand on appuye sur un bouton "chiffre"
 
 def pressNum(num):
     global value
     value.set(num)
 
-b = True
+# Cette fonction efface un chiffre rentré dans une case
+
+def pressLettre():
+    global value
+    value.set(" ")
+
+# Cette fonction vérifie que les chiffres sont les bons et informe quand la partie est terminée
 
 def test_erreur(*args):
-    global value, c, X, Y, message_erreur, hasard
+    global value, nouvelle_grille, X, Y, message_erreur, hasard, end
 
-    if value.get() != c[X][Y]:
+    if value.get() != nouvelle_grille[X][Y]:
         message_erreur.set("ERREUR")
     else:
         message_erreur.set('')
         hasard.remove((X,Y))
         if hasard == []:
-            b = False
+            end = False
             finish = tk.Label(fenetre, relief= "groove", fg = 'red', text= "BRAVO ! Vous avez gagné !")
             finish.grid(row=0, column=0, columnspan=11)
 
-def pressLettre(lettre):
-    global value
-    if lettre == "annuler":
-        value.set(" ")
-    if lettre == "retourner":
-        value.set(" ")
+# Cette fonction affiche les chiffres et les cases à remplir dans l'interface
+
+def affichage(Grille):
+    global nouvelle_grille, hasard
+    
+    a = melangerlignes(Grille)
+    b = melangercolonnes(a)
+    nouvelle_grille = cryptage(b)
+
+    for i in range(30):
+        generate_case(hasard)
+    
+    for n in range(len(nouvelle_grille)):
+        for t in range(len(nouvelle_grille)):
+            if (n, t) in hasard:
+                create_entry(grille, t, n)
+            else:
+                x = (Taille-565)+(t*(Taille-533))
+                y = (Taille-570)+(n*(Taille-533))
+                position = grille.create_text(x, y, text= str(nouvelle_grille[n][t]), font="35")
+
+# Cette fonction fait tourner le chronomètre
+
+def loop():
+    global fenetre, compteur, boucle, end
+
+    boucle += 1
+    minutes = boucle // 60
+    secondes = boucle % 60
+    compteur.set(str(minutes) + " : " + str(secondes))
+    if end:
+        fenetre.after(1000, loop)
+
+# Cette fonction lance la partie
+
+def start():
+    affichage(G1)
+    loop()
 
 
 
+""" Interface graphique """
 
-# Création de la fenêtre
 
-Taille = 600
-Case = 9
+# Mise en forme de la fenêtre
 
 fenetre = tk.Tk()
 fenetre.title("Sudoku")
@@ -140,18 +198,22 @@ fenetre.geometry("700x700")
 bis = ttk.Frame(fenetre)
 bis.rowconfigure(0, weight= 1)
 bis.rowconfigure(4, weight= 1)
-bis.grid(row=0, column=11, sticky= 'ns')
+bis.grid(row=0, column=10, sticky= 'ns')
+
+grille = tk.Canvas(fenetre, height= Taille, width= Taille)
+grille.grid(row= 0, column= 0, columnspan= 10)
+
+# Message d'erreur
 
 message_erreur = tk.StringVar(fenetre)
 erreur = tk.Label(bis, textvariable= message_erreur, fg= 'red', relief= "sunken")
 erreur.grid(row=1, column=0)
 
+# Chronomètre
+
 compteur = tk.StringVar(fenetre, "0 : 0")
 chrono = tk.Label(bis, relief="sunken", font= 35, textvariable=compteur)
 chrono.grid(row=0, column=0)
-
-grille = tk.Canvas(fenetre, height= Taille, width= Taille)
-grille.grid(row= 0, column= 0, columnspan= 11)
 
 # Création de la grille
 
@@ -163,8 +225,7 @@ for i in range(Case+1):
         verticale = grille.create_line((i*Taille)/Case, 0, (i*Taille)/Case, Taille)
         horizontale = grille.create_line(0,(i*Taille)/Case, Taille, (i*Taille)/Case)
 
-
-#Création des boutons des chiffres
+# Boutons "chiffres"
 
 bouton1 = tk.Button(fenetre, text="1", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(1))
 bouton1.grid(row=1, column=0)
@@ -193,52 +254,12 @@ bouton8.grid(row=1, column=7)
 bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(9))
 bouton9.grid(row=1, column=8)
 
-#Création des boutons d'action
+# Bouton d'annulation
 
-btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre("annuler"))
+btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre())
 btn_annuler.grid(row=1, column=9)
 
-btn_retourner = tk.Button(fenetre, text="Retourne", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre("retourner"))
-btn_retourner.grid(row=1, column=10)
-
-
 # Bouton pour commencer la partie
-c = []
-hasard = []
-d = 0
-def affichage(Grille):
-    global c, hasard
-    
-    a = melangerlignes(Grille)
-    b = melangercolonnes(a)
-    c = cryptage(b)
-
-    for i in range(30):
-        generate_case(hasard)
-    
-    for n in range(len(c)):
-        for t in range(len(c)):
-            if (n, t) in hasard:
-                create_entry(grille, t, n)
-            else:
-                x = (Taille-565)+(t*(Taille-533))
-                y = (Taille-570)+(n*(Taille-533))
-                position = grille.create_text(x, y, text= str(c[n][t]), font="35") 
-
-def loop():
-    global fenetre, compteur, d, b
-
-    d += 1
-    minutes = d // 60
-    secondes = d % 60
-    compteur.set(str(minutes) + " : " + str(secondes))
-    print(d)
-    if b:
-        fenetre.after(1000, loop)
-
-def start():
-    affichage(G1)
-    loop()
 
 lancement = tk.Button(bis, command= lambda : start(), text= "On commence ?")
 lancement.grid(row= 2, column= 0)
