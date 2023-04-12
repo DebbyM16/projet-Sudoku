@@ -143,7 +143,7 @@ def test_erreur(*args):
         if hasard == []:
             end = False
             finish = tk.Label(fenetre, relief= "groove", fg = 'red', text= "BRAVO ! Vous avez gagné !")
-            finish.grid(row=0, column=0, columnspan=11)
+            finish.grid(row=0, column=0, columnspan=10)
 
 # Cette fonction affiche les chiffres et les cases à remplir dans l'interface
 
