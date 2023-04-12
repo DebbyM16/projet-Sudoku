@@ -229,18 +229,20 @@ def affichage(Grille):
                 y = (Taille-570)+(n*(Taille-533))
                 position = grille.create_text(x, y, text= str(c[n][t]), font="35") 
 
-def start():
+def loop():
     global fenetre, compteur, d, b
-    
-    affichage(G1)
 
     d += 1
     minutes = d // 60
     secondes = d % 60
     compteur.set(str(minutes) + " : " + str(secondes))
     print(d)
-    if b == True:
-        fenetre.after(1000, start())
+    if b:
+        fenetre.after(1000, loop)
+
+def start():
+    affichage(G1)
+    loop()
 
 lancement = tk.Button(bis, command= lambda : start(), text= "On commence ?")
 lancement.grid(row= 2, column= 0)
