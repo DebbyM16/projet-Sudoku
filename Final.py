@@ -154,7 +154,7 @@ def affichage(Grille):
     b = melangercolonnes(a)
     nouvelle_grille = cryptage(b)
 
-    for i in range(30):
+    for i in range(40):
         generate_case(hasard)
     
     for n in range(len(nouvelle_grille)):
@@ -178,11 +178,22 @@ def loop():
     if end:
         fenetre.after(1000, loop)
 
-# Cette fonction lance la partie
+# Cette fonction lance la partie et rend les boutons cliquables
 
 def start():
     affichage(G1)
     loop()
+
+    bouton1["state"] = "normal"
+    bouton2["state"] = "normal"
+    bouton3["state"] = "normal"
+    bouton4["state"] = "normal"
+    bouton5["state"] = "normal"
+    bouton6["state"] = "normal"
+    bouton7["state"] = "normal"
+    bouton8["state"] = "normal"
+    bouton9["state"] = "normal"
+    btn_annuler["state"] = "normal"
 
 
 
@@ -227,36 +238,36 @@ for i in range(Case+1):
 
 # Boutons "chiffres"
 
-bouton1 = tk.Button(fenetre, text="1", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(1))
+bouton1 = tk.Button(fenetre, text="1", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(1), state= "disable")
 bouton1.grid(row=1, column=0)
 
-bouton2 = tk.Button(fenetre, text="2", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(2))
+bouton2 = tk.Button(fenetre, text="2", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(2), state= "disable" )
 bouton2.grid(row=1, column=1)
 
-bouton3 = tk.Button(fenetre, text="3", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(3))
+bouton3 = tk.Button(fenetre, text="3", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(3), state= "disable" )
 bouton3.grid(row=1, column=2)
 
-bouton4 = tk.Button(fenetre, text="4", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(4))
+bouton4 = tk.Button(fenetre, text="4", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(4), state= "disable")
 bouton4.grid(row=1, column=3)
 
-bouton5 = tk.Button(fenetre, text="5", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(5))
+bouton5 = tk.Button(fenetre, text="5", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(5), state= "disable")
 bouton5.grid(row=1, column=4)
 
-bouton6 = tk.Button(fenetre, text="6", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(6))
+bouton6 = tk.Button(fenetre, text="6", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(6), state= "disable")
 bouton6.grid(row=1, column=5)
 
-bouton7 = tk.Button(fenetre, text="7", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(7))
+bouton7 = tk.Button(fenetre, text="7", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(7), state= "disable")
 bouton7.grid(row=1, column=6)
 
-bouton8 = tk.Button(fenetre, text="8", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(8))
+bouton8 = tk.Button(fenetre, text="8", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(8), state= "disable")
 bouton8.grid(row=1, column=7)
 
-bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(9))
+bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(9), state= "disable")
 bouton9.grid(row=1, column=8)
 
 # Bouton d'annulation
 
-btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre())
+btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre(), state= "disable")
 btn_annuler.grid(row=1, column=9)
 
 # Bouton pour commencer la partie
