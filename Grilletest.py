@@ -1,14 +1,25 @@
 G1 = [[9, 1, 4, 5, 2, 3, 8, 7, 6] ,  
-      [3, 7, 5, 9, 6, 8, 4, 2, 1] , 
-      [6, 2, 8, 7, 1, 4, 3, 5, 9] , 
-      [2, 9, 6, 4, 5, 1, 7, 8, 3] , 
-      [5, 8, 3, 6, 7, 2, 9, 1, 4] , 
-      [1, 4, 7, 8, 3, 9, 5, 6, 2] , 
-      [4, 6, 9, 1, 8, 7, 2, 3, 5] , 
-      [7, 3, 1, 2, 4, 5, 6, 9, 8] , 
-      [8, 5, 2, 3, 9, 6, 1, 4, 7]]
+      [3, 7, 5, 9, 0, 0, 4, 2, 1] , 
+      [0, 2, 8, 0, 1, 0, 3, 5, 9] , 
+      [2, 9, 6, 4, 5, 1, 7, 8, 0] , 
+      [5, 8, 3, 0, 7, 0, 9, 1, 4] , 
+      [1, 0, 7, 8, 0, 9, 0, 6, 2] , 
+      [4, 6, 9, 0, 8, 0, 2, 3, 5] , 
+      [0, 3, 1, 2, 0, 0, 6, 9, 8] , 
+      [8, 0, 2, 3, 0, 6, 1, 4, 7]]
 
 
+[[9, 1, 4, 5, 2, 3, 8, 7, 6], 
+ [3, 7, 5, 9, 6, 8, 4, 2, 1], 
+ [6, 2, 8, 7, 1, 4, 3, 5, 9], 
+ [2, 9, 6, 4, 5, 1, 7, 8, 3], 
+ [5, 8, 3, 6, 7, 2, 9, 1, 4], 
+ [1, 4, 7, 8, 3, 9, 5, 6, 2], 
+ [4, 6, 9, 1, 8, 7, 2, 3, 5], 
+ [7, 3, 1, 2, 4, 5, 6, 9, 8],
+ [8, 5, 2, 3, 9, 6, 1, 4, 7]]
+
+import random as rd
 
 #Cette fonction sert à mélanger les lignes dans une même rangée de 3 
 
@@ -96,7 +107,6 @@ def MélangerLignes(G):
 
 
 
-
 def crete() : 
     L = [[], [], [], [], [], [], [], [], []]
     import random as rd
@@ -117,6 +127,8 @@ def crete() :
             del L[1]           
     return L
 
+
+
 def create() :
     L = [[], [], [], [], [], [], [], [], []]
     import random as rd
@@ -127,24 +139,117 @@ def create() :
     
 
 
+def sum(G) :
+    n = 0
+    for i in range(0, 9) :
+        for j in range(0, 9) :
+            n += G[i][j]
+    return n
+
+
+
+def countnumb(L) :
+    n = 0
+    for i in range(1, 10) :
+        if L.count(i) <= 1 or L[i - 1] == 0 :
+            n += 1
+    return n == 9
+
+
+
+def listcolumn(G, n) :
+    L = []
+    for i in range(0, 9) :
+        L.append(G[i][n])
+    return L
+
+
+
+def errorbloc(G, n) :
+    L = []
+    a = n % 3
+    b = n - a
+    for i in range(b, b + 3) :
+        for j in range(a * 3, a * 3 + 3) :
+            L.append(G[i][j])
+    if countnumb(L) :
+        return True
+
+
+
+def error(G) :
+    n = 0
+    for i in range(0, 9) :
+        if countnumb(G[i]) :
+            n += 1
+    for j in range(0, 9) :
+        if countnumb(listcolumn(G, j)):
+            n += 1
+    for k in range(0, 9) :
+        if errorbloc(G, k) :
+            n += 1
+    return n == 27
+
+
+
+def epure(L) :
+    while 0 in L :
+        L.remove(0)
+    return L
+
+
+
+def verify(G) :
+    for l in range(0, 8) :
+        L = []
+        n = 0
+        for i in range(0, 9) :
+            if G[l][i] == 0 :
+                n += 1
+                for j in range(1, 10) :
+                    G[l][i] = j
+                    if error(G) :
+                         L.append(j)
+                         G[l][i] = 0
+                    else :
+                         G[l][i] = 0
+                    L.append(0)
+        if len(epure(L)) == n and n != 0 :
+            o = 0
+            for k in range(0, 9) :
+                if G[l][k] == 0 :
+                    G[l][k] = L[o]
+                    o += 1
+
+    return G
+
+
+
+
+#Partie aide
+
+# Cette fonction remplis une case choisie automatiquement 
+
+def aide():
+    global nouvelle_grille, X, Y, message_erreur, hasard, end
+    pressNum(nouvelle_grille[X][Y])
+    message_erreur.set('')
+    if hasard == []:
+        end = False
+        finish = tk.Label(fenetre, relief= "groove", fg = 'red', text= "BRAVO ! Vous avez gagné !")
+        finish.grid(row=0, column=0, columnspan=10)
+
+
+btn_aide["state"] = "normal"
+
+# Bouton d'aide 
+
+btn_aide = tk.Button(fenetre, text="Aide", font=("helvetica", 15), fg=("red"), bd=0.5, command=lambda:aide(), state= "disable")
+btn_aide.grid(row=1, column= 10)
 
 
 
 
 
-print(mélangercolonnes(mélangerlignes(cryptage(G1))))
 
 
-
-
-
-A = [[4, 2, 8, 9, 6, 3, 5, 7, 1], 
-     [1, 5, 7, 4, 8, 2, 3, 6, 9], 
-     [9, 3, 6, 1, 7, 5, 2, 8, 4], 
-     [2, 7, 4, 3, 9, 8, 6, 1, 5], 
-     [5, 6, 1, 2, 4, 7, 8, 9, 3], 
-     [3, 8, 9, 5, 1, 6, 7, 4, 2], 
-     [8, 4, 3, 6, 5, 9, 1, 2, 7], 
-     [6, 9, 5, 7, 2, 1, 4, 3, 8], 
-     [7, 1, 2, 8, 3, 4, 9, 5, 6]
-     ]
