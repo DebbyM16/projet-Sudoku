@@ -145,6 +145,13 @@ def test_erreur(*args):
             finish = tk.Label(fenetre, relief= "groove", fg = 'red', text= "BRAVO ! Vous avez gagné !")
             finish.grid(row=0, column=0, columnspan=10)
 
+# Cette fonction remplie une case à la demande du joueur
+
+def aide():
+    global nouvelle_grille, X, Y, message_erreur
+    pressNum(nouvelle_grille[X][Y])
+    message_erreur.set('')
+
 # Cette fonction affiche les chiffres et les cases à remplir dans l'interface
 
 def affichage(Grille):
@@ -194,6 +201,7 @@ def start():
     bouton8["state"] = "normal"
     bouton9["state"] = "normal"
     btn_annuler["state"] = "normal"
+    btn_aide["state"] = "normal"
 
 
 
@@ -269,6 +277,11 @@ bouton9.grid(row=1, column=8)
 
 btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre(), state= "disable")
 btn_annuler.grid(row=1, column=9)
+
+# Bouton d'aide 
+
+btn_aide = tk.Button(fenetre, text="Aide", font=("helvetica", 15), fg=("red"), bd=0.5, command=lambda:aide(), state= "disable")
+btn_aide.grid(row=1, column= 10)
 
 # Bouton pour commencer la partie
 
