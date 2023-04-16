@@ -154,7 +154,7 @@ def affichage(Grille):
     b = melangercolonnes(a)
     nouvelle_grille = cryptage(b)
 
-    for i in range(40):
+    for i in range(30):
         generate_case(hasard)
     
     for n in range(len(nouvelle_grille)):
