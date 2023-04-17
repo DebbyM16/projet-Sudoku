@@ -139,7 +139,7 @@ fenetre.geometry("700x700")
 
 bis = ttk.Frame(fenetre)
 bis.rowconfigure(0, weight= 1)
-bis.rowconfigure(4, weight= 1)
+bis.rowconfigure(5, weight= 1)
 bis.grid(row=0, column=11, sticky= 'ns')
 
 message_erreur = tk.StringVar(fenetre)
@@ -233,7 +233,7 @@ def loop():
     secondes = d % 60
     compteur.set(str(minutes) + " : " + str(secondes))
     print(d)
-    if b:
+    if b == True:
         fenetre.after(1000, loop)
 
 def start():
@@ -242,5 +242,21 @@ def start():
 
 lancement = tk.Button(bis, command= lambda : start(), text= "On commence ?")
 lancement.grid(row= 2, column= 0)
+
+def pause():
+    global b
+    b = False
+
+def reparti():
+    global b 
+    b = True
+    loop()
+
+btn_pause = tk.Button(bis, command= lambda : pause(), text= "Pause")
+btn_pause.grid(row=4, column= 0)
+
+btn_reparti = tk.Button(bis, command= lambda : reparti(), text= "Relancer la partie")
+btn_reparti.grid(row=5, column= 0)
+
 
 fenetre.mainloop()
