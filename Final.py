@@ -9,14 +9,14 @@ from tkinter import ttk
 
 # Grille de base 
 
-G1 = [[9, 1, 4, 5, 2, 3, 8, 7, 6] ,  
-      [3, 7, 5, 9, 6, 8, 4, 2, 1] , 
-      [6, 2, 8, 7, 1, 4, 3, 5, 9] , 
-      [2, 9, 6, 4, 5, 1, 7, 8, 3] , 
-      [5, 8, 3, 6, 7, 2, 9, 1, 4] , 
-      [1, 4, 7, 8, 3, 9, 5, 6, 2] , 
-      [4, 6, 9, 1, 8, 7, 2, 3, 5] , 
-      [7, 3, 1, 2, 4, 5, 6, 9, 8] , 
+G1 = [[9, 1, 4, 5, 2, 3, 8, 7, 6],  
+      [3, 7, 5, 9, 6, 8, 4, 2, 1], 
+      [6, 2, 8, 7, 1, 4, 3, 5, 9], 
+      [2, 9, 6, 4, 5, 1, 7, 8, 3], 
+      [5, 8, 3, 6, 7, 2, 9, 1, 4], 
+      [1, 4, 7, 8, 3, 9, 5, 6, 2], 
+      [4, 6, 9, 1, 8, 7, 2, 3, 5], 
+      [7, 3, 1, 2, 4, 5, 6, 9, 8], 
       [8, 5, 2, 3, 9, 6, 1, 4, 7]]
 
 # Listes vides
@@ -34,7 +34,7 @@ Case = 9
 end = True
 boucle = 0
 value = None
-X, Y = None, None
+X,Y = None, None
 
 
 
@@ -106,28 +106,32 @@ def generate_case(liste):
 
 def create_entry(canvas, i, j):
     global Taille, Case
+    
     a_remplir = tk.IntVar(canvas, " ")
     a_remplir.trace("w", test_erreur)
     
-    def focus(*args, v=a_remplir, x=j, y=i):
+    def focus(*args, v= a_remplir, x= j, y= i):
         global value, X, Y
+        
         value = v
         X,Y = x,y
 
-    affichage = tk.Entry(canvas, bg= "grey79", fg= "violet red" , font= "35", relief="solid", justify= "center", textvariable= a_remplir)
+    affichage = tk.Entry(canvas, bg= "grey79", fg= "violet red" , font= "35", relief= "solid", justify= "center", textvariable= a_remplir)
     affichage.bind('<FocusIn>', focus)
-    affichage.place(x=(i*Taille)/Case , y= (j*Taille)/Case, width=67, height=67)
+    affichage.place(x= (i*Taille)/Case , y= (j*Taille)/Case, width= 67, height= 67)
 
 # Cette fonction rempli une case quand on appuye sur un bouton "chiffre"
 
 def pressNum(num):
     global value
+    
     value.set(num)
 
 # Cette fonction efface un chiffre rentré dans une case
 
 def pressLettre():
     global value
+    
     value.set(" ")
 
 # Cette fonction vérifie que les chiffres sont les bons et informe quand la partie est terminée
@@ -143,36 +147,37 @@ def test_erreur(*args):
         if hasard == []:
             end = False
             finish = tk.Label(fenetre, relief= "groove", fg = 'red', text= "BRAVO ! Vous avez gagné !")
-            finish.grid(row=0, column=0, columnspan=10)
+            finish.grid(row= 0, column= 0, columnspan= 10)
 
 # Cette fonction remplie une case à la demande du joueur
 
 def aide():
     global nouvelle_grille, X, Y, message_erreur
+    
     pressNum(nouvelle_grille[X][Y])
     message_erreur.set('')
 
 # Cette fonction arrête le chrononomètre pour mettre le jeu en pause
 
 def pause():
-    global b
-    b = False
+    global end
+    
+    end = False
 
 # Cette fonction relance le chronomètre quand le jeu est en pause
 
 def reparti():
-    global b
-    b = True
+    global end
+    
+    end = True
     loop()
 
 # Cette fonction affiche les chiffres et les cases à remplir dans l'interface
 
 def affichage(Grille):
     global nouvelle_grille, hasard
-    
-    a = melangerlignes(Grille)
-    b = melangercolonnes(a)
-    nouvelle_grille = cryptage(b)
+
+    nouvelle_grille = cryptage(melangercolonnes(melangerlignes(Grille)))
 
     for i in range(30):
         generate_case(hasard)
@@ -184,7 +189,7 @@ def affichage(Grille):
             else:
                 x = (Taille-565)+(t*(Taille-533))
                 y = (Taille-570)+(n*(Taille-533))
-                position = grille.create_text(x, y, text= str(nouvelle_grille[n][t]), font="35")
+                position = grille.create_text(x, y, text= str(nouvelle_grille[n][t]), font= "35")
 
 # Cette fonction fait tourner le chronomètre
 
@@ -195,7 +200,7 @@ def loop():
     minutes = boucle // 60
     secondes = boucle % 60
     compteur.set(str(minutes) + " : " + str(secondes))
-    if end:
+    if end == True:
         fenetre.after(1000, loop)
 
 # Cette fonction lance la partie et rend les boutons cliquables
@@ -232,7 +237,7 @@ fenetre.geometry("700x700")
 bis = ttk.Frame(fenetre)
 bis.rowconfigure(0, weight= 1)
 bis.rowconfigure(5, weight= 1)
-bis.grid(row=0, column=10, sticky= 'ns')
+bis.grid(row= 0, column= 10, sticky= 'ns')
 
 grille = tk.Canvas(fenetre, height= Taille, width= Taille)
 grille.grid(row= 0, column= 0, columnspan= 10)
@@ -241,13 +246,13 @@ grille.grid(row= 0, column= 0, columnspan= 10)
 
 message_erreur = tk.StringVar(fenetre)
 erreur = tk.Label(bis, textvariable= message_erreur, fg= 'red', relief= "sunken")
-erreur.grid(row=1, column=0)
+erreur.grid(row= 1, column= 0)
 
 # Chronomètre
 
 compteur = tk.StringVar(fenetre, "0 : 0")
-chrono = tk.Label(bis, relief="sunken", font= 35, textvariable=compteur)
-chrono.grid(row=0, column=0)
+chrono = tk.Label(bis, relief= "sunken", font= "35", textvariable= compteur)
+chrono.grid(row= 0, column= 0)
 
 # Création de la grille
 
@@ -261,54 +266,54 @@ for i in range(Case+1):
 
 # Boutons "chiffres"
 
-bouton1 = tk.Button(fenetre, text="1", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(1), state= "disable")
-bouton1.grid(row=1, column=0)
+bouton1 = tk.Button(fenetre, text= "1", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(1), state= "disable")
+bouton1.grid(row= 1, column= 0)
 
-bouton2 = tk.Button(fenetre, text="2", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(2), state= "disable" )
-bouton2.grid(row=1, column=1)
+bouton2 = tk.Button(fenetre, text= "2", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(2), state= "disable" )
+bouton2.grid(row= 1, column= 1)
 
-bouton3 = tk.Button(fenetre, text="3", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(3), state= "disable" )
-bouton3.grid(row=1, column=2)
+bouton3 = tk.Button(fenetre, text= "3", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(3), state= "disable" )
+bouton3.grid(row= 1, column= 2)
 
-bouton4 = tk.Button(fenetre, text="4", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(4), state= "disable")
-bouton4.grid(row=1, column=3)
+bouton4 = tk.Button(fenetre, text= "4", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(4), state= "disable")
+bouton4.grid(row= 1, column= 3)
 
-bouton5 = tk.Button(fenetre, text="5", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(5), state= "disable")
-bouton5.grid(row=1, column=4)
+bouton5 = tk.Button(fenetre, text= "5", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(5), state= "disable")
+bouton5.grid(row= 1, column= 4)
 
-bouton6 = tk.Button(fenetre, text="6", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(6), state= "disable")
-bouton6.grid(row=1, column=5)
+bouton6 = tk.Button(fenetre, text= "6", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(6), state= "disable")
+bouton6.grid(row= 1, column= 5)
 
-bouton7 = tk.Button(fenetre, text="7", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(7), state= "disable")
-bouton7.grid(row=1, column=6)
+bouton7 = tk.Button(fenetre, text= "7", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(7), state= "disable")
+bouton7.grid(row= 1, column= 6)
 
-bouton8 = tk.Button(fenetre, text="8", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(8), state= "disable")
-bouton8.grid(row=1, column=7)
+bouton8 = tk.Button(fenetre, text= "8", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(8), state= "disable")
+bouton8.grid(row= 1, column= 7)
 
-bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(9), state= "disable")
-bouton9.grid(row=1, column=8)
+bouton9 = tk.Button(fenetre, text= "9", font= ("helvetica", "20"), fg= "black", bd= 0.5, command= lambda : pressNum(9), state= "disable")
+bouton9.grid(row= 1, column= 8)
 
 # Bouton d'annulation
 
-btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre(), state= "disable")
-btn_annuler.grid(row=1, column=9)
+btn_annuler = tk.Button(fenetre, text= "Annuler", font= ("helvetica", "15"), fg= "red", bd= 0.5, command= lambda : pressLettre(), state= "disable")
+btn_annuler.grid(row= 1, column= 9)
 
 # Bouton d'aide 
 
-btn_aide = tk.Button(fenetre, text="Aide", font=("helvetica", 15), fg=("red"), bd=0.5, command=lambda:aide(), state= "disable")
-btn_aide.grid(row=1, column= 10)
+btn_aide = tk.Button(fenetre, text= "Aide", font= ("helvetica", "15"), fg= "red", bd= 0.5, command= lambda : aide(), state= "disable")
+btn_aide.grid(row= 1, column= 10)
 
 # Boutons de pause et de reprise du jeu
 
-btn_pause = tk.Button(bis, command= lambda : pause(), text= "Pause", state= "disable")
-btn_pause.grid(row=3, column= 0)
+btn_pause = tk.Button(bis, text= "Pause", command= lambda : pause(), state= "disable")
+btn_pause.grid(row= 3, column= 0)
 
-btn_reparti = tk.Button(bis, command= lambda : reparti(), text= "Relancer la partie", state= "disable")
-btn_reparti.grid(row=4, column= 0)
+btn_reparti = tk.Button(bis, text= "Relancer la partie", command= lambda : reparti(), state= "disable")
+btn_reparti.grid(row= 4, column= 0)
 
 # Bouton pour commencer la partie
 
-lancement = tk.Button(bis, command= lambda : start(), text= "On commence ?")
+lancement = tk.Button(bis, text= "Jouer", command= lambda : start())
 lancement.grid(row= 2, column= 0)
 
 fenetre.mainloop()
