@@ -288,14 +288,6 @@ bouton8.grid(row=1, column=7)
 bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(9), state= "disable")
 bouton9.grid(row=1, column=8)
 
-# Boutons de pause et de reprise du jeu
-
-btn_pause = tk.Button(bis, command= lambda : pause(), text= "Pause", state= "disable")
-btn_pause.grid(row=3, column= 0)
-
-btn_reparti = tk.Button(bis, command= lambda : reparti(), text= "Relancer la partie", state= "disable")
-btn_reparti.grid(row=4, column= 0)
-
 # Bouton d'annulation
 
 btn_annuler = tk.Button(fenetre, text="Annule", bd=0.5, font=("helvetica", 15), fg="red", command=lambda:pressLettre(), state= "disable")
@@ -305,6 +297,14 @@ btn_annuler.grid(row=1, column=9)
 
 btn_aide = tk.Button(fenetre, text="Aide", font=("helvetica", 15), fg=("red"), bd=0.5, command=lambda:aide(), state= "disable")
 btn_aide.grid(row=1, column= 10)
+
+# Boutons de pause et de reprise du jeu
+
+btn_pause = tk.Button(bis, command= lambda : pause(), text= "Pause", state= "disable")
+btn_pause.grid(row=3, column= 0)
+
+btn_reparti = tk.Button(bis, command= lambda : reparti(), text= "Relancer la partie", state= "disable")
+btn_reparti.grid(row=4, column= 0)
 
 # Bouton pour commencer la partie
 
