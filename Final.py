@@ -179,7 +179,7 @@ def affichage(Grille):
 
     nouvelle_grille = cryptage(melangercolonnes(melangerlignes(Grille)))
 
-    for i in range(30):
+    for i in range(35):
         generate_case(hasard)
     
     for n in range(len(nouvelle_grille)):
