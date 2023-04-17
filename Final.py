@@ -152,6 +152,19 @@ def aide():
     pressNum(nouvelle_grille[X][Y])
     message_erreur.set('')
 
+# Cette fonction arrête le chrononomètre pour mettre le jeu en pause
+
+def pause():
+    global b
+    b = False
+
+# Cette fonction relance le chronomètre quand le jeu est en pause
+
+def reparti():
+    global b
+    b = True
+    loop()
+
 # Cette fonction affiche les chiffres et les cases à remplir dans l'interface
 
 def affichage(Grille):
@@ -202,6 +215,8 @@ def start():
     bouton9["state"] = "normal"
     btn_annuler["state"] = "normal"
     btn_aide["state"] = "normal"
+    btn_pause["state"] = "normal"
+    btn_reparti["state"] = "normal"
 
 
 
@@ -216,7 +231,7 @@ fenetre.geometry("700x700")
 
 bis = ttk.Frame(fenetre)
 bis.rowconfigure(0, weight= 1)
-bis.rowconfigure(4, weight= 1)
+bis.rowconfigure(5, weight= 1)
 bis.grid(row=0, column=10, sticky= 'ns')
 
 grille = tk.Canvas(fenetre, height= Taille, width= Taille)
@@ -272,6 +287,14 @@ bouton8.grid(row=1, column=7)
 
 bouton9 = tk.Button(fenetre, text="9", font=("helvetica", 20), fg=("black"), bd=0.5, command=lambda:pressNum(9), state= "disable")
 bouton9.grid(row=1, column=8)
+
+# Boutons de pause et de reprise du jeu
+
+btn_pause = tk.Button(bis, command= lambda : pause(), text= "Pause", state= "disable")
+btn_pause.grid(row=3, column= 0)
+
+btn_reparti = tk.Button(bis, command= lambda : reparti(), text= "Relancer la partie", state= "disable")
+btn_reparti.grid(row=4, column= 0)
 
 # Bouton d'annulation
 
